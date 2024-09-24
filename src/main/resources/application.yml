@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: logging-starter
+http-logging:
+  configuration:
+#    enabled: false
+    log-level: info
+    time-request-parameter: startTime
+    log-format: '%M %u Headers:%n%h%n %H%n %r %R %t ms.'
+
+
+#  // Логирование должно включать в себя метод запроса,
+#  // URL,
+#  // заголовки запроса и ответа,
+#  // код ответа,
+#  // время обработки запроса
+#  // %M - method, %u - url, %h - req headers, %H, resp - headers, %r - код ответа(строка), %R – код ответа(цифра), %t - время обработки запроса.
