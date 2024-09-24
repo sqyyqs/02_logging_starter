@@ -7,11 +7,3 @@ http-logging:
     log-level: info
     time-request-parameter: startTime
     log-format: '%n%M %u %nHeaders:%n%h%n%H%n%R %r %tms.'
-
-
-#  // Логирование должно включать в себя метод запроса,
-#  // URL,
-#  // заголовки запроса и ответа,
-#  // код ответа,
-#  // время обработки запроса
-#  // %M - method, %u - url, %h - req headers, %H, resp - headers, %r - код ответа(строка), %R – код ответа(цифра), %t - время обработки запроса.
