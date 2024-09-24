@@ -44,7 +44,7 @@ public class HttpLoggingInterceptor implements HandlerInterceptor, ClientHttpReq
         Instant start = Instant.now();
         ClientHttpResponse response = execution.execute(request, body);
         Instant end = Instant.now();
-        httpLogger.log(request, response, Duration.between(end, start));
+        httpLogger.log(request, response, Duration.between(start, end));
         return response;
     }
 }

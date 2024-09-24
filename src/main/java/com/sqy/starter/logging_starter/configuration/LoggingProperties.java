@@ -6,10 +6,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "http-logging.configuration")
 public class LoggingProperties {
-    //todo add deafult
     private String timeRequestParameter = "startTime";
     private String logLevel = "info";
-    private String logFormat = "";//todo
+    private String logFormat = "%n%M %u %nHeaders:%n%h%n%H%n%R %r %tms.";
 
     public String getTimeRequestParameter() {
         return timeRequestParameter;

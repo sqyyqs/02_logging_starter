@@ -19,22 +19,17 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 @ConditionalOnBean(LoggingAutoConfiguration.class)
 public class HttpLogger {
-    // Логирование должно включать в себя метод запроса,
-    // URL,
-    // заголовки запроса и ответа,
-    // код ответа,
-    // время обработки запроса
-    // %M - method, %u - url, %h - req headers, %H, resp - headers, %r - код ответа(строка), %R – код ответа(цифра), %t - время обработки запроса.
-
     //internal logger
     private static final Logger _logger = LoggerFactory.getLogger(HttpLogger.class);
 
     private final LoggerInvoker logger;
     private final LoggingProperties loggingProperties;
+    private final LogMessageBuilder logMessageBuilder;
 
-    public HttpLogger(LoggingProperties loggingProperties) {
-        this.loggingProperties = loggingProperties;
+    public HttpLogger(LoggingProperties loggingProperties, LogMessageBuilder logMessageBuilder) {
         this.logger = LoggerInvoker.from(loggingProperties.getLogLevel(), _logger);
+        this.loggingProperties = loggingProperties;
+        this.logMessageBuilder = logMessageBuilder;
     }
 
     public void log(HttpServletRequest request, HttpServletResponse response) {
@@ -42,7 +37,7 @@ public class HttpLogger {
             .httpServletResponse(response)
             .requestTime(requestDuration(request))
             .build();
-        String logMessage = buildLogMessage(params);
+        String logMessage = logMessageBuilder.buildLogMessage(params);
         logger.log(logMessage);
     }
 
@@ -52,20 +47,8 @@ public class HttpLogger {
             .httpResponse(response)
             .requestTime(duration)
             .build();
-        String logMessage = buildLogMessage(params);
+        String logMessage = logMessageBuilder.buildLogMessage(params);
         logger.log(logMessage);
-    }
-
-    private String buildLogMessage(LoggingParams loggingParams) {
-        return loggingProperties.getLogFormat()
-            .replaceAll("%n", System.lineSeparator())
-            .replaceAll("%M", loggingParams.method())
-            .replaceAll("%u", loggingParams.url())
-            .replaceAll("%h", loggingParams.requestHeaders().toString())
-            .replaceAll("%H", loggingParams.responseHeaders().toString())
-            .replaceAll("%r", loggingParams.status().name())
-            .replaceAll("%R", String.valueOf(loggingParams.status().value()))
-            .replaceAll("%t", loggingParams.requestTime());
     }
 
     private Duration requestDuration(HttpServletRequest request) {

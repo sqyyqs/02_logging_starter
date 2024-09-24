@@ -3,10 +3,10 @@ spring:
     name: logging-starter
 http-logging:
   configuration:
-#    enabled: false
+    enabled: true
     log-level: info
     time-request-parameter: startTime
-    log-format: '%M %u Headers:%n%h%n %H%n %r %R %t ms.'
+    log-format: '%n%M %u %nHeaders:%n%h%n%H%n%R %r %tms.'
 
 
 #  // Логирование должно включать в себя метод запроса,
