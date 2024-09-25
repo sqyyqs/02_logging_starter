@@ -55,7 +55,7 @@ public record LoggingParams(
             return this;
         }
 
-        public Builder httpResponse(ClientHttpResponse response) {
+        public Builder clientHttpResponse(ClientHttpResponse response) {
             this.responseHeaders = getHeaders(response);
             try {
                 this.status = HttpStatus.valueOf(response.getStatusCode().value());

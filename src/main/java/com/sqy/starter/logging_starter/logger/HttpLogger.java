@@ -6,7 +6,6 @@ import java.time.Instant;
 import com.sqy.starter.logging_starter.configuration.LoggingAutoConfiguration;
 import com.sqy.starter.logging_starter.configuration.LoggingProperties;
 import com.sqy.starter.logging_starter.domain.LoggingParams;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.http.HttpRequest;
@@ -19,15 +18,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 @ConditionalOnBean(LoggingAutoConfiguration.class)
 public class HttpLogger {
-    //internal logger
-    private static final Logger _logger = LoggerFactory.getLogger(HttpLogger.class);
-
     private final LoggerInvoker logger;
     private final LoggingProperties loggingProperties;
     private final LogMessageBuilder logMessageBuilder;
 
     public HttpLogger(LoggingProperties loggingProperties, LogMessageBuilder logMessageBuilder) {
-        this.logger = LoggerInvoker.from(loggingProperties.getLogLevel(), _logger);
+        this.logger = LoggerInvoker.from(loggingProperties.getLogLevel(), LoggerFactory.getLogger(HttpLogger.class));
         this.loggingProperties = loggingProperties;
         this.logMessageBuilder = logMessageBuilder;
     }
@@ -44,7 +40,7 @@ public class HttpLogger {
     public void log(HttpRequest request, ClientHttpResponse response, Duration duration) {
         LoggingParams params = LoggingParams.builder()
             .httpRequest(request)
-            .httpResponse(response)
+            .clientHttpResponse(response)
             .requestTime(duration)
             .build();
         String logMessage = logMessageBuilder.buildLogMessage(params);
