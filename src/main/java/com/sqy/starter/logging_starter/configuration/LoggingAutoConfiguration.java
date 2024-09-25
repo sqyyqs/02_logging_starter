@@ -26,7 +26,7 @@ public class LoggingAutoConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(loggingInterceptor);
     }
 
-    @Bean
+    @Bean("loggingRestTemplate")
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
